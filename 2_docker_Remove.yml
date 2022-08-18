@@ -1,0 +1,15 @@
+---
+- name: Install Docker om Amazon Linux
+  hosts: all # dockerhosts
+  become: True
+  tasks:
+    - name: Stop Docker Service
+      service:
+        name: docker
+        state: stopped
+
+    - name: Start Docker avec yannick
+      yum:
+        name: docker
+        state: absent # or removed
+    

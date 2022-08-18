@@ -1,0 +1,10 @@
+--- 
+- name: Git installation on Amazon Linux
+  hosts: all #ansibles
+  become: true
+  tasks: 
+  - name: Install git
+    yum:
+      name: git 
+      state: latest
+      update_cache: yes

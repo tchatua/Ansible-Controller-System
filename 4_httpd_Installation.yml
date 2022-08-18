@@ -1,0 +1,38 @@
+--- 
+- name: This playbook install httpd or apache2 
+  hosts: webservers
+  become: true 
+  tasks:
+    - name: Update all packages
+      yum:
+        name: "*"
+        state: latest
+
+    - name: Install latest httpd
+      yum:
+        name: httpd
+        state: latest
+      notify:
+        - Start httpd
+        - enable httpd 
+
+  handlers: 
+    - name: Start httpd
+      service: 
+        name: httpd
+        state: started
+
+    - name: enable httpd
+      service: 
+        name: httpd
+        enabled: yes
+
+    - name: Install apache2
+      apt:
+        name: apache2
+        state: present
+
+    - name: Start apache2
+      service:
+        name: apache2
+        state: started 

@@ -1,0 +1,23 @@
+---
+- name: Install Docker om Amazon Linux
+  hosts: all # dockerhosts
+  become: True
+  tasks:
+    - name: Install docker
+      yum:
+        name: docker
+        state: latest
+
+    - name: Start Docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Create dockeradmin user
+      user:
+        name: dockeradmin
+#    - name: Docker version
+#    - name: Service Docker Status
+#    - name: Create dockeradmin user password
+#    - name: add dockeradmin user to docker group
