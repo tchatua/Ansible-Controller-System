@@ -1,19 +1,8 @@
-[dockerhosts]
-docker.server ansible_host=172.31.38.249
 
-[tomcat]
-tomcat.server ansible_host=172.31.44.32
+[tomcats]
+tomcat.server	ansible_host=10.0.1.248
 
-[webservers]
-httpd.server ansible_host=172.31.36.235
-apache2.server ansible_host=172.31.35.33
-
-[kubernetes]
-
-[maven]
-
-[jenkins]
-
-[sonarqube]
-
-
+[webserver]
+# docker.host   ansible_host=10.0.1.132
+apache2.server   ansible_host=10.0.1.126
+httpd.server   ansible_host=10.0.1.81

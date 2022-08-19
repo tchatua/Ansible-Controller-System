@@ -1,6 +1,6 @@
 --- 
-- name: This playbook uninstall apache2 
-  hosts: webservers
+- name: This playbook remove apache2 
+  hosts: webserver
   become: true 
   tasks:
     - name: stop apache2

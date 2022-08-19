@@ -1,6 +1,6 @@
 --- 
-- name: This playbook install httpd or apache2 
-  hosts: webservers
+- name: This playbook install apache2 
+  hosts: webserver
   become: true 
   tasks:
     - name: Install apache2
