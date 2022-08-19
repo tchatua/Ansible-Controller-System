@@ -38,8 +38,9 @@
         path: /var/www/html/index.html
         state: absent
       when: ansible_os_family == "Debian"
-   #- name: copy index.html
-   #   file:
-   #     src: /opt/ansible/index.html
-   #     dest: /var/www/html
-   #     mode: 0666 # give read and write permission
+
+    - name: copy index.html
+      file:
+        src: /opt/ansible/index.html
+        dest: /var/www/html
+        mode: 0666 # give read and write permission
