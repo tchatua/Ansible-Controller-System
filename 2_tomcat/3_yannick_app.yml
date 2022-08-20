@@ -1,0 +1,24 @@
+---
+- name: This playbook deploy app-services
+  hosts: all
+  become: true
+  tasks:
+    - name: Create apps directory 
+      file:
+        dest: /opt/apps
+        state: directory
+
+    - name: Clone mbx-app repository
+      git:
+        repo: https://username:password@github.com/tchatua/tomcat-delete.git        
+        dest: /opt/apps
+
+    - name: Give executing permissions to startup.sh under bin
+      file:
+        path: /opt/apps/bin
+        mode: 0777
+
+    - name: Start startup.sh
+      shell: nohup ./statup.sh 
+      args: 
+        chdir: /opt/apps/bin 
