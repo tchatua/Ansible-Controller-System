@@ -1,0 +1,20 @@
+---
+- name: This playbook install multiple packages
+  hosts: tomcats
+  become: true
+  tasks:
+  - name: Install git|make|gcc|wget|telnet|gzip|tree  packakes
+    yum:
+      name: ['git', 'make', 'gcc', 'wget', 'telnet', 'gzip', 'tree']
+      state: installed
+  - name: Install php|php-common|php-opcache|php-mcrypt|php-cli|php-gd|php-curl|php-mysql packages
+    yum:
+      name: "{{ item }}"
+      state: installed
+    with_items:
+      - php
+      - php-common
+      - php-cli
+      - php-gd
+      - php-curl
+      - php-mysql

@@ -1,0 +1,17 @@
+---
+- name: Ansible playbook with vault
+  hosts: tomcats # all
+  become: true
+  vars_files:
+    - pass.yml 
+  tasks:
+    - name: Create /opt/ansible/ansible_vault directories
+      file:
+        path: /opt/ansadmin/ansible_vault
+        state: directory
+
+    - name: Clone a repository
+      git:
+        repo: https://tchatua:{{ password }}@github.com/tchatua/tchatua.git
+        dest: /opt/ansadmin/ansible_vault
+

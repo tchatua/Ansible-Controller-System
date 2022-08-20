@@ -1,0 +1,38 @@
+---
+- name: This playbook install Tomcat
+  hosts: all
+  become: true
+  tasks:
+    - name: Install java
+      yum:
+        name: java
+        state: installed
+      when: ansible_os_family == "RedHat"
+
+    - name: Install java on Ubuntu
+      apt:
+        name: default-jre # will install Open JDK JRE
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Download tomcat
+      get_url:
+        url: https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.82/bin/apache-tomcat-8.5.82.tar.gz
+        dest: /opt
+
+    - name: Unzip apache-tomcat-8.5.82.tar.gz
+      unarchive:
+        src: /opt/apache-tomcat-8.5.82.tar.gz
+        dest: /opt
+        remote_src: yes
+
+    - name: give executing permissions on startup.sh file
+      file:
+        path: /opt/apache-tomcat-8.5.82/bin/startup.sh
+        mode: 0777
+
+    - name: start the tomcat services
+      shell: nohup ./startup.sh # will execute our script in the background contunuously
+      args:
+        chdir: /opt/apache-tomcat-8.5.82/bin
+      tags: start_tomcat 

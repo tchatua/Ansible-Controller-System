@@ -1,0 +1,11 @@
+---
+- name: This playbook is to create user
+  hosts: tomcats # all
+  become: true
+  vars_files:
+    - users.yml
+  tasks:
+  - name: Creating user {{ user }}
+    user:
+      name: "{{ user }}"
+

@@ -1,6 +1,6 @@
 --- 
 - name: This playbook install httpd or apache2 
-  hosts: webserver
+  hosts: tomcats # webserver
   become: true 
   tasks:
     - name: Install httpd
@@ -8,12 +8,16 @@
         name: httpd
         state: present
       when: ansible_os_family == "RedHat"
+      tags: install_apache
+      ignore_errors: yes
 
     - name: Start httpd # if do not work: cd /etc/init.d and apachectl start
       service: 
         name: httpd
         state: started
       when: ansible_os_family == "Redhat" 
+      tags: start_apache
+      ignore_errors: yes
 
     - name: enable httpd
       service: 
@@ -25,13 +29,17 @@
       apt:
         name: apache2
         state: present
-      when: ansible_os_family == "Debian" 
+      when: ansible_os_family == "Debian"
+      tags: install_apache 
+      ignore_errors: yes
 
     - name: Start apache2
       service:
         name: apache2
         state: started 
       when: ansible_os_family == "Debian"
+      tags: start_apache
+      ignore_errors: yes
 
     - name: Remove the default index.html file on Ubuntu
       file:
@@ -44,3 +52,4 @@
         src: /opt/ansible/index.html
         dest: /var/www/html
         mode: 0666 # give read and write permission
+      ignore_errors: yes
