@@ -1,0 +1,27 @@
+---
+# handlers file for setup_apache
+- name: start apache # if do not work: cd /etc/init.d and apachectl start
+  service:
+    name: httpd
+    state: started
+  tags: start_apache
+  ignore_errors: yes
+
+- name: start apache2
+  service:
+    name: apache2
+    state: started
+  tags: start_apache2
+  ignore_errors: yes
+
+- name: restart apache
+  service:
+    name: httpd
+    state: restarted
+  tags: restart_apache
+
+- name: restart apache2
+  service:
+    name: apache2
+    state: restarted
+  tags: restart_apache2 

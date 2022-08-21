@@ -1,0 +1,77 @@
+--- 
+- name: This playbook install httpd or apache2 
+  hosts: all # webserver
+  become: true
+  vars:
+    port: 8082  
+  tasks:
+    - name: Install httpd
+      yum:
+        name: httpd
+        state: present
+      when: ansible_os_family == "RedHat"
+      tags: install_apache
+      notify: start apache
+      ignore_errors: yes
+
+    - name: Install apache2
+      apt:
+        name: apache2
+        state: present
+      when: ansible_os_family == "Debian"
+      tags: install_apache2 
+      notify: start apache2
+      ignore_errors: yes
+
+    - name: copy index.html
+      file:
+        src: /opt/ansible/index.html
+        dest: /var/www/html
+        mode: 0666 # give read and write permission
+      tags: copy_index
+      ignore_errors: yes
+
+    - name: Ensure the default Apache port is {{ port }}
+      lineinfile:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: '^Listen '
+        insertafter: '^#Listen '
+        line: Listen {{ port }} 
+      when: ansible_os_family == "Redhat"
+      notify: restart apache
+    
+    - name: Ensure the default Apache port is {{ port }} on Debian
+      lineinfile:
+        path: /etc/apache2/ports.conf
+        regexp: '^Listen '
+        insertafter: '^# /etc/apache2/sites-enabled/000-default.conf '
+        line: Listen {{ port }}
+      when: ansible_os_family == "Debian"
+      notify: restart apache2
+
+  handlers:
+    - name: start apache # if do not work: cd /etc/init.d and apachectl start
+      service:
+        name: httpd
+        state: started
+      tags: start_apache
+      ignore_errors: yes
+
+    - name: start apache2
+      service:
+        name: apache2
+        state: started
+      tags: start_apache2
+      ignore_errors: yes
+      
+    - name: restart apache
+      service:
+        name: httpd
+        state: restarted
+      tags: restart_apache  
+    
+    - name: restart apache2
+      service:
+        name: apache2
+        state: restarted
+      tags: restart_apache2  
