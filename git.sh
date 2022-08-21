@@ -1,5 +1,6 @@
 #!/bin/bash
-sudo git status
-sudo git add .
-sudo git commit -m "022020222117"
-sudo git push origin main
+git status
+git add .
+git commit -m "022120221528"
+git push origin main
+echo "Fin"
